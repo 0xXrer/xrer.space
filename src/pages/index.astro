@@ -1,0 +1,55 @@
+---
+import "@/styles/global.css";
+
+// Utils
+import { User } from "lucide-react";
+// Component Imports
+import Container from "@/components/container.astro";
+import { Button } from "@/components/ui/button";
+
+// Containers
+import About from "@/components/containers/about.astro";
+import Projects from "@/components/containers/projects.astro";
+import Soon from "@/components/containers/soon.astro";
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>Xrer Portfolio</title>
+    </head>
+
+    <body>
+        <main
+            class="mx-3 grow md:mx-8 lg:mx-12 grid-border-color border-r border-l"
+        >
+            <!-- <Container
+                showTopBoxes={false}
+                showTopLine={false}
+                showBottomLine={false}
+                class="sticky backdrop-blur-md top-0 border-primary/30 grid-border-color border-b bg-primary/20 hover:bg-primary/25 fv-style transition-colors supports-[backdrop-filter]:bg-primary/10 supports-[backdrop-filter]:hover:bg-primary/15"
+            >
+                <section
+                    class="py-2 flex flex-row items-center justify-center text-primary"
+                >
+                    <User className="mr-2 h-5" /> Portfolio made by
+                    <Button
+                        variant="link"
+                        className="font-normal text-md px-0 ml-2"
+                    >
+                        <a href="https://github.com/xrer">xrer</a>
+                    </Button>
+                </section>
+            </Container> -->
+
+            <About />
+
+            <Projects />
+
+            <Soon />
+        </main>
+    </body>
+</html>

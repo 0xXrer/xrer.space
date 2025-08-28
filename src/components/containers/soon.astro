@@ -1,0 +1,20 @@
+---
+import Container from "@/components/container.astro";
+import DiagonalLines from "@/components/patters/diagonal-lines.astro";
+---
+
+<Container
+    showTopBoxes={false}
+    showTopLine={false}
+    showBottomBoxes={false}
+    class="h-auto flex flex-col gap-6"
+>
+    <section class="flex items-start gap-6 p-6">
+        <DiagonalLines
+            class="absolute inset-0 w-full h-full pointer-events-none bg-blue-300/20"
+        />
+        <p class="z-2">
+            Soon i add more information about me and my portfolio ❤️
+        </p>
+    </section>
+</Container>
