@@ -1,0 +1,302 @@
+---
+import type { ProjectConfig } from "@/config/portfolio";
+import Card, { CardContent } from "@/components/card";
+
+interface Props {
+    project: ProjectConfig;
+    featured?: boolean;
+    gridClass?: string;
+}
+
+const {
+    project,
+    featured = false,
+    gridClass = "col-span-full h-full md:col-span-3",
+} = Astro.props;
+
+// Map icon names to actual imports
+const iconMap: Record<string, any> = {
+    LucideBox: "lucide-react",
+    Key: "lucide-react",
+};
+
+// For now, we'll use a simple string approach for icons
+// In a real implementation, you might want to use a more sophisticated icon system
+---
+
+<section class={gridClass}>
+    <Card className="relative flex size-full flex-col gap-4">
+        {
+            featured && (
+                <div class="absolute -top-[23px] left-2 rounded-t-sm px-1.5 py-1 border-offgray-200 border border-b-0 to-offgray-100/30 bg-linear-180 from-blue-50/30 subheader !text-[0.5625rem] text-black">
+                    {project.badge || "Featured Project"}
+                </div>
+            )
+        }
+        <section class="relative flex size-full flex-col gap-4">
+            <div
+                class="group relative p-2 overflow-hidden rounded-md border transition-all duration-300 ease-in-out hover:border-blue-300 select-none"
+            >
+                <!-- Diagonal Lines Pattern -->
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="absolute inset-0 w-full h-full pointer-events-none stroke-border transition-all duration-300 ease-in-out group-hover:stroke-blue-300"
+                >
+                    <defs>
+                        <pattern
+                            id={`diagonalPattern-${project.id}`}
+                            patternUnits="userSpaceOnUse"
+                            width="10"
+                            height="10"
+                            patternTransform="rotate(45)"
+                        >
+                            <line x1="0" y1="0" x2="0" y2="10" stroke-width="1"
+                            ></line>
+                        </pattern>
+                    </defs>
+                    <rect
+                        width="100%"
+                        height="100%"
+                        fill={`url(#diagonalPattern-${project.id})`}></rect>
+                </svg>
+
+                <!-- Media Container -->
+                <div
+                    class="video-container relative"
+                    data-link={project.url || "#"}
+                    data-project-id={project.id}
+                >
+                    {
+                        project.videoSrc ? (
+                            <video
+                                class="video-element w-full h-auto object-cover rounded-sm relative z-2 pointer-events-none select-none"
+                                muted
+                                loop
+                                playsinline
+                                preload="auto"
+                                style="min-height: 200px; width: 100%; display: block; background: #000;"
+                                poster=""
+                            >
+                                <source
+                                    src={project.videoSrc}
+                                    type="video/mp4"
+                                />
+                                Your browser does not support the video tag.
+                            </video>
+                        ) : project.imageSrc ? (
+                            <img
+                                src={project.imageSrc}
+                                alt={project.title}
+                                class="w-full h-auto object-cover rounded-sm relative z-2 pointer-events-none select-none"
+                                style="min-height: 200px; width: 100%;"
+                            />
+                        ) : (
+                            <div class="w-full h-48 bg-muted rounded-sm relative z-2 flex items-center justify-center">
+                                <span class="text-muted-foreground">
+                                    No media available
+                                </span>
+                            </div>
+                        )
+                    }
+                </div>
+
+                <!-- Bottom Panel -->
+                <div
+                    class="absolute bg-background right-0 bottom-0 left-0 z-4 flex items-center bg-cream-50 border-t border-blue-300 divide-x divide-blue-300 dark:divide-blue-400/50 text-accent-blue text-xs [box-shadow:hsl(218,_13%,_50%,_0.1)_0_-2px_0_0_inset] transform transition-transform duration-200 group-hover:translate-y-0 md:translate-y-full"
+                >
+                    {
+                        project.url && (
+                            <a
+                                class="dark:bg-offgray-950 w-full px-3 py-2 text-center hover:bg-blue-50 dark:hover:bg-blue-950"
+                                href={project.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn More →
+                            </a>
+                        )
+                    }
+                    {
+                        project.githubUrl && (
+                            <a
+                                class="dark:bg-offgray-950 w-full px-3 py-2 text-center hover:bg-blue-50 dark:hover:bg-blue-950"
+                                href={project.githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                GitHub →
+                            </a>
+                        )
+                    }
+                </div>
+            </div>
+
+            <CardContent>
+                <h3 class="flex flex-row gap-2 items-center">
+                    {
+                        project.icon === "LucideBox" && (
+                            <svg
+                                class="h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                <line x1="12" y1="22.08" x2="12" y2="12" />
+                            </svg>
+                        )
+                    }
+                    {
+                        project.icon === "Key" && (
+                            <svg
+                                class="h-4 w-4"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <circle cx="7.5" cy="15.5" r="5.5" />
+                                <path d="m21 2-9.6 9.6" />
+                                <path d="m15.5 7.5 3 3L22 7l-3-3" />
+                            </svg>
+                        )
+                    }
+                    {project.title}
+                </h3>
+                <div class="text-muted-foreground text-sm">
+                    <p>{project.description}</p>
+                    {
+                        project.longDescription && (
+                            <p>{project.longDescription}</p>
+                        )
+                    }
+                    {
+                        project.url && (
+                            <p>
+                                Check it out at:
+                                <a
+                                    href={project.url}
+                                    class="text-blue-600 hover:underline"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {project.url.replace(/^https?:\/\//, "")}
+                                </a>
+                            </p>
+                        )
+                    }
+                    {
+                        project.technologies &&
+                            project.technologies.length > 0 && (
+                                <div class="flex flex-wrap gap-1 mt-2">
+                                    {project.technologies.map((tech) => (
+                                        <span class="px-2 py-1 bg-muted rounded-sm text-xs">
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+                            )
+                    }
+                </div>
+            </CardContent>
+        </section>
+    </Card>
+</section>
+
+<style>
+    .video-element {
+        opacity: 1 !important;
+        visibility: visible !important;
+        background-color: #000;
+        object-fit: cover;
+    }
+
+    .video-container {
+        overflow: hidden;
+    }
+
+    .video-element::-webkit-media-controls {
+        display: none !important;
+    }
+
+    .video-element::-webkit-media-controls-start-playback-button {
+        display: none !important;
+    }
+</style>
+
+<!-- JavaScript for video hover functionality -->
+<script define:vars={{ projectId: project.id, projectUrl: project.url }}>
+    document.addEventListener("DOMContentLoaded", function () {
+        const videoContainers = document.querySelectorAll(
+            `[data-project-id="${projectId}"]`,
+        );
+
+        videoContainers.forEach((container) => {
+            const video = container.querySelector(".video-element");
+
+            if (!video) return;
+
+            console.log(`Setting up video for project: ${projectId}`);
+
+            // Ensure video is visible and ready
+            video.style.opacity = "1";
+            video.style.visibility = "visible";
+
+            // Preload the video
+            video.load();
+
+            // Mouse enter - play video immediately
+            container.addEventListener("mouseenter", () => {
+                video.currentTime = 0;
+                video.style.opacity = "1";
+
+                // Try to play immediately
+                video
+                    .play()
+                    .then(() => {
+                        console.log(`Video playing for project: ${projectId}`);
+                    })
+                    .catch((error) => {
+                        console.log("Auto-play prevented:", error);
+                        // Fallback: try to show first frame
+                        video.start();
+                    });
+            });
+
+            // Mouse leave - pause video
+            container.addEventListener("mouseleave", () => {
+                video.pause();
+                video.currentTime = 0;
+            });
+
+            // Add loading event listeners
+            video.addEventListener("loadeddata", () => {
+                console.log(`Video data loaded for project: ${projectId}`);
+                video.style.opacity = "1";
+            });
+
+            video.addEventListener("canplay", () => {
+                console.log(`Video can play for project: ${projectId}`);
+                video.style.opacity = "1";
+            });
+
+            video.addEventListener("error", (e) => {
+                console.error(`Video error for project ${projectId}:`, e);
+            });
+
+            // Force visibility after a short delay
+            setTimeout(() => {
+                video.style.opacity = "1";
+                video.style.visibility = "visible";
+            }, 100);
+        });
+    });
+</script>

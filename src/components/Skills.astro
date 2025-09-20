@@ -1,0 +1,76 @@
+---
+import type { SkillConfig } from "@/config/portfolio";
+
+interface Props {
+  skills: SkillConfig[];
+  title?: string;
+  showCategories?: boolean;
+}
+
+const { skills, title = "Programming languages I work with:", showCategories = false } = Astro.props;
+
+const groupedSkills = showCategories
+  ? skills.reduce((acc, skill) => {
+      const category = skill.category || 'other';
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(skill);
+      return acc;
+    }, {} as Record<string, SkillConfig[]>)
+  : { all: skills };
+---
+
+<div class="skills-container">
+  {showCategories ? (
+    Object.entries(groupedSkills).map(([category, categorySkills]) => (
+      <div class="skill-category mb-4">
+        <h4 class="text-sm font-medium text-muted-foreground mb-2 capitalize">{category}</h4>
+        <p class="text-foreground leading-relaxed">
+          {categorySkills.map((skill, index) => (
+            <span class="skill-item">
+              <img
+                src={skill.icon}
+                alt={skill.name}
+                class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
+              />
+              <span class="text-muted-foreground">
+                {skill.name}{index < categorySkills.length - 1 ? ',' : ''}
+              </span>
+            </span>
+          ))}
+        </p>
+      </div>
+    ))
+  ) : (
+    <p class="text-foreground leading-relaxed">
+      {title}
+      {skills.map((skill, index) => (
+        <span class="skill-item">
+          <img
+            src={skill.icon}
+            alt={skill.name}
+            class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
+          />
+          <span class="text-muted-foreground">
+            {skill.name}{index < skills.length - 1 ? ',' : ''}
+          </span>
+        </span>
+      ))}
+    </p>
+  )}
+</div>
+
+<style>
+  .skill-item {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  .skills-container img {
+    transition: transform 0.2s ease;
+  }
+
+  .skills-container img:hover {
+    transform: scale(1.1);
+  }
+</style>

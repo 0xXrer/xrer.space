@@ -1,5 +1,7 @@
 ---
 import "@/styles/global.css";
+import portfolioConfig from "@/config/portfolio";
+import SEO from "@/components/SEO.astro";
 
 // Utils
 import { User } from "lucide-react";
@@ -11,15 +13,19 @@ import { Button } from "@/components/ui/button";
 import About from "@/components/containers/about.astro";
 import Projects from "@/components/containers/projects.astro";
 import Soon from "@/components/containers/soon.astro";
+
+const { personal, seo } = portfolioConfig;
 ---
 
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="generator" content={Astro.generator} />
-        <title>Xrer Portfolio</title>
+        <title>{personal.name} Portfolio</title>
+
+        <!-- SEO and Social Media Meta Tags -->
+        <SEO seo={seo} />
     </head>
 
     <body>

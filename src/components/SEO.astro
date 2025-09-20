@@ -1,0 +1,120 @@
+---
+import type { SEOConfig } from "@/config/portfolio";
+
+interface Props {
+    seo: SEOConfig;
+    pageTitle?: string;
+    pageDescription?: string;
+    pageImage?: string;
+    pageUrl?: string;
+    pageType?: string;
+}
+
+const {
+    seo,
+    pageTitle,
+    pageDescription,
+    pageImage,
+    pageUrl,
+    pageType = "website",
+} = Astro.props;
+
+// Use page-specific values or fall back to default SEO config
+const title = pageTitle || seo.title;
+const description = pageDescription || seo.description;
+const image = pageImage || seo.image;
+const url = pageUrl || seo.siteUrl;
+const type = pageType || seo.type;
+
+// Ensure absolute URLs
+const absoluteImage = image.startsWith("http")
+    ? image
+    : `${seo.siteUrl}${image}`;
+const absoluteUrl = url.startsWith("http") ? url : `${seo.siteUrl}${url}`;
+---
+
+<!-- Basic Meta Tags -->
+<meta name="description" content={description} />
+<meta name="keywords" content={seo.keywords.join(", ")} />
+<meta name="author" content={seo.author} />
+<meta name="robots" content="index, follow" />
+<meta name="language" content={seo.locale.replace("_", "-")} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={absoluteUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={absoluteImage} />
+<meta property="og:site_name" content={seo.author} />
+<meta property="og:locale" content={seo.locale} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={absoluteUrl} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={absoluteImage} />
+{
+    seo.twitterHandle && (
+        <meta property="twitter:creator" content={seo.twitterHandle} />
+    )
+}
+
+<!-- Additional SEO Meta Tags -->
+<meta name="theme-color" content="#000000" />
+<meta name="msapplication-TileColor" content="#000000" />
+<link rel="canonical" href={absoluteUrl} />
+
+<!-- Structured Data (JSON-LD) -->
+<script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: seo.author,
+        url: seo.siteUrl,
+        image: absoluteImage,
+        description: description,
+        jobTitle: "Full Stack Developer & Reverse Engineer",
+        worksFor: {
+            "@type": "Organization",
+            name: "Freelance",
+        },
+        nationality: {
+            "@type": "Country",
+            name: "Kazakhstan",
+        },
+        knowsAbout: seo.keywords,
+    })}
+/>
+
+<!-- Website Structured Data -->
+<script
+    type="application/ld+json"
+    set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: title,
+        url: seo.siteUrl,
+        description: description,
+        author: {
+            "@type": "Person",
+            name: seo.author,
+        },
+        inLanguage: seo.locale.replace("_", "-"),
+    })}
+/>
+
+<!-- Favicon and Icons -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="manifest" href="/site.webmanifest" />
+
+<!-- Preconnect to important domains -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- DNS Prefetch for external resources -->
+<link rel="dns-prefetch" href="//github.com" />
+<link rel="dns-prefetch" href="//linkedin.com" />
+<link rel="dns-prefetch" href="//twitter.com" />

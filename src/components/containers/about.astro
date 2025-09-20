@@ -1,5 +1,9 @@
 ---
 import Container from "@/components/container.astro";
+import Skills from "@/components/Skills.astro";
+import portfolioConfig from "@/config/portfolio";
+
+const { personal, skills } = portfolioConfig;
 ---
 
 <Container
@@ -13,88 +17,26 @@ import Container from "@/components/container.astro";
             class="flex-shrink-0 p-0.5 bg-background border border-2 rounded-lg"
         >
             <img
-                src="/avatar.png"
-                alt="Xrer Profile Picture"
+                src={personal.avatar}
+                alt={`${personal.name} Profile Picture`}
                 class="pointer-events-none select-none w-18 h-18 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
             />
         </div>
 
         <!-- Profile Info -->
         <div class="flex flex-col">
-            <h1 class="text-2xl font-bold mb-1">Xrer</h1>
+            <h1 class="text-2xl font-bold mb-1">{personal.name}</h1>
 
             <div class="space-y-2">
-                <p class="text-foreground leading-relaxed">
-                    I'm a 17-year-old passionate developer from Kazakhstan. I
-                    specialize in fullstack development and software
-                    engineering, currently diving into the exciting world of
-                    reverse engineering as a junior - and I'm absolutely loving
-                    every moment of it!
-                </p>
+                {
+                    personal.bio.map((paragraph) => (
+                        <p class="text-foreground leading-relaxed">
+                            {paragraph}
+                        </p>
+                    ))
+                }
 
-                <p class="text-muted-foreground leading-relaxed">
-                    My journey in programming has led me through various
-                    languages and technologies. I enjoy building innovative
-                    solutions and exploring the depths of how software works.
-                </p>
-
-                <p class="text-foreground leading-relaxed">
-                    Programming languages I work with:
-                    <img
-                        src="/icons/typescript.svg"
-                        alt="TypeScript"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">TypeScript,</span>
-                    <img
-                        src="/icons/javascript.svg"
-                        alt="JavaScript"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">JavaScript,</span>
-                    <img
-                        src="/icons/rust.svg"
-                        alt="Rust"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">Rust,</span>
-                    <img
-                        src="/icons/csharp.svg"
-                        alt="C#"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">C#,</span>
-                    <img
-                        src="/icons/cpp.svg"
-                        alt="C++"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">C++,</span>
-                    <img
-                        src="/icons/php.svg"
-                        alt="PHP"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">PHP,</span>
-                    <img
-                        src="/icons/python.svg"
-                        alt="Python"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">Python,</span>
-                    <img
-                        src="/icons/lua.svg"
-                        alt="Lua"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">Lua,</span>
-                    <img
-                        src="/icons/luau.svg"
-                        alt="Luau"
-                        class="pointer-events-none select-none inline-block w-5 h-5 mx-1"
-                    />
-                    <span class="text-muted-foreground">Luau</span>
-                </p>
+                <Skills skills={skills} />
             </div>
         </div>
     </section>
