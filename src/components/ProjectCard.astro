@@ -193,18 +193,6 @@ const iconMap: Record<string, any> = {
                             </p>
                         )
                     }
-                    {
-                        project.technologies &&
-                            project.technologies.length > 0 && (
-                                <div class="flex flex-wrap gap-1 mt-2">
-                                    {project.technologies.map((tech) => (
-                                        <span class="px-2 py-1 bg-muted rounded-sm text-xs">
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
-                            )
-                    }
                 </div>
             </CardContent>
         </section>
