@@ -65,24 +65,50 @@ const iconMap: Record<string, any> = {
                     class="video-container relative"
                     data-link={project.url || "#"}
                     data-project-id={project.id}
+                    data-video-src={project.videoSrc || ""}
                 >
                     {
                         project.videoSrc ? (
-                            <video
-                                class="video-element w-full h-auto object-cover rounded-sm relative z-2 pointer-events-none select-none"
-                                muted
-                                loop
-                                playsinline
-                                preload="auto"
-                                style="min-height: 200px; width: 100%; display: block; background: #000;"
-                                poster=""
-                            >
-                                <source
-                                    src={project.videoSrc}
-                                    type="video/mp4"
-                                />
-                                Your browser does not support the video tag.
-                            </video>
+                            <>
+                                <video
+                                    class="video-element w-full h-auto object-cover rounded-sm relative z-2 pointer-events-none select-none"
+                                    muted
+                                    loop
+                                    playsinline
+                                    preload="auto"
+                                    style="min-height: 200px; width: 100%; display: block; background: #000;"
+                                    poster=""
+                                >
+                                    <source
+                                        src={project.videoSrc}
+                                        type="video/mp4"
+                                    />
+                                    Your browser does not support the video tag.
+                                </video>
+                                <!-- Expand Video Button on Hover -->
+                                <button
+                                    class="expand-video-btn absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 text-white rounded-full p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-auto"
+                                    data-video-expand={project.id}
+                                    aria-label="Expand video"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <polyline points="15 3 21 3 21 9"></polyline>
+                                        <polyline points="9 21 3 21 3 15"></polyline>
+                                        <line x1="21" x2="14" y1="3" y2="10"></line>
+                                        <line x1="3" x2="10" y1="21" y2="14"></line>
+                                    </svg>
+                                </button>
+                            </>
                         ) : project.imageSrc ? (
                             <img
                                 src={project.imageSrc}
@@ -229,6 +255,7 @@ const iconMap: Record<string, any> = {
 
         videoContainers.forEach((container) => {
             const video = container.querySelector(".video-element");
+            const expandBtn = container.querySelector(`[data-video-expand="${projectId}"]`);
 
             if (!video) return;
 
@@ -285,6 +312,82 @@ const iconMap: Record<string, any> = {
                 video.style.opacity = "1";
                 video.style.visibility = "visible";
             }, 100);
+
+            // Expand video button functionality
+            if (expandBtn) {
+                expandBtn.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    const videoSrc = container.dataset.videoSrc;
+                    if (videoSrc) {
+                        openVideoModal(videoSrc, projectId);
+                    }
+                });
+            }
         });
     });
+
+    // Video modal functionality
+    function openVideoModal(videoSrc, projectId) {
+        // Create modal backdrop
+        const modal = document.createElement("div");
+        modal.className = "fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm";
+        modal.setAttribute("data-video-modal", projectId);
+
+        // Create modal content
+        modal.innerHTML = `
+            <div class="relative max-w-[90vw] max-h-[90vh] w-full h-full flex items-center justify-center">
+                <!-- Close button -->
+                <button
+                    class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-black/50 hover:bg-black/90 text-white rounded-full transition-all duration-200"
+                    aria-label="Close video"
+                    onclick="this.closest('[data-video-modal]').remove(); document.body.style.overflow = 'unset';"
+                >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+
+                <!-- Loading spinner -->
+                <div class="absolute inset-0 flex items-center justify-center loading-spinner">
+                    <div class="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                </div>
+
+                <!-- Video player -->
+                <video
+                    class="max-w-full max-h-full object-contain rounded-lg"
+                    src="${videoSrc}"
+                    controls
+                    autoplay
+                    muted
+                    onloadeddata="this.parentElement.querySelector('.loading-spinner').style.display = 'none';"
+                    onerror="this.parentElement.querySelector('.loading-spinner').innerHTML = '<div class=\\"text-white text-lg\\">Error loading video</div>';"
+                />
+            </div>
+        `;
+
+        // Close on backdrop click
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.remove();
+                document.body.style.overflow = "unset";
+            }
+        });
+
+        // Close on Escape key
+        const handleEscape = (e) => {
+            if (e.key === "Escape") {
+                modal.remove();
+                document.body.style.overflow = "unset";
+                document.removeEventListener("keydown", handleEscape);
+            }
+        };
+        document.addEventListener("keydown", handleEscape);
+
+        // Prevent body scroll
+        document.body.style.overflow = "hidden";
+
+        // Add modal to page
+        document.body.appendChild(modal);
+    }
 </script>

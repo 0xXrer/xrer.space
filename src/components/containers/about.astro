@@ -4,6 +4,22 @@ import Skills from "@/components/Skills.astro";
 import portfolioConfig from "@/config/portfolio";
 
 const { personal, skills } = portfolioConfig;
+
+// Extract GitHub username from GitHub URL and construct avatar URL
+const getGitHubAvatar = (githubUrl: string | undefined): string => {
+    if (!githubUrl) return personal.avatar;
+
+    const match = githubUrl.match(/github\.com\/([^\/]+)/);
+    if (match && match[1]) {
+        return `https://github.com/${match[1]}.png`;
+    }
+
+    return personal.avatar;
+};
+
+const avatarUrl = personal.socialLinks.github
+    ? getGitHubAvatar(personal.socialLinks.github)
+    : personal.avatar;
 ---
 
 <Container
@@ -17,7 +33,7 @@ const { personal, skills } = portfolioConfig;
             class="flex-shrink-0 p-0.5 bg-background border border-2 rounded-lg"
         >
             <img
-                src={personal.avatar}
+                src={avatarUrl}
                 alt={`${personal.name} Profile Picture`}
                 class="pointer-events-none select-none w-18 h-18 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
             />

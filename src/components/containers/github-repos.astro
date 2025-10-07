@@ -1,0 +1,171 @@
+---
+import Container from "@/components/container.astro";
+import Grid from "@/components/patters/grid.astro";
+import GitHubRepoCard from "@/components/GitHubRepoCard.astro";
+import portfolioConfig from "@/config/portfolio";
+
+const { personal } = portfolioConfig;
+
+// Extract GitHub username from URL
+const githubUsername =
+    personal.socialLinks.github?.split("github.com/")[1] || "0xXrer";
+
+// Fetch public repositories from GitHub API
+let repositories = [];
+let error = null;
+
+try {
+    const response = await fetch(
+        `https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=100`,
+        {
+            headers: {
+                Accept: "application/vnd.github.v3+json",
+            },
+        },
+    );
+
+    if (response.ok) {
+        const repos = await response.json();
+
+        // Filter only public, non-archived, non-fork repositories
+        const filteredRepos = repos
+            .filter((repo) => !repo.private && !repo.archived && !repo.fork)
+            .sort(
+                (a, b) =>
+                    new Date(b.updated_at).getTime() -
+                    new Date(a.updated_at).getTime(),
+            )
+            .slice(0, 12); // Show top 12 most recently updated repos
+
+        // Fetch OpenGraph images for each repository
+        repositories = await Promise.all(
+            filteredRepos.map(async (repo) => {
+                let ogImage = null;
+                try {
+                    // Try to fetch the repository's OpenGraph image
+                    const ogUrl = `https://opengraph.githubassets.com/1/${githubUsername}/${repo.name}`;
+                    ogImage = ogUrl;
+                } catch (e) {
+                    console.error(
+                        `Failed to get OG image for ${repo.name}:`,
+                        e,
+                    );
+                }
+
+                return {
+                    ...repo,
+                    ogImage,
+                };
+            }),
+        );
+    } else {
+        error = `Failed to fetch repositories: ${response.status}`;
+    }
+} catch (e) {
+    error = `Error fetching repositories: ${e.message}`;
+    console.error("GitHub API Error:", e);
+}
+---
+
+<Container showTopLine={true}>
+    <Grid
+        patternSize={20}
+        enableGradient={true}
+        gradientDirection={"to-bottom"}
+        class="absolute inset-0 w-full h-full opacity-20 pointer-events-none"
+    />
+    <section class="p-6">
+        <div class="bg-background w-full p-6">
+            <div class="flex flex-col items-center text-center space-y-4">
+                <!-- GitHub Icon -->
+                <div
+                    class="flex-shrink-0 p-0.5 bg-background border border-2 rounded-lg"
+                >
+                    <a
+                        href={personal.socialLinks.github || "#"}
+                        target="_blank"
+                    >
+                        <img
+                            src="/github.png"
+                            alt="GitHub Profile"
+                            class="pointer-events-none select-none w-18 h-18 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
+                        />
+                    </a>
+                </div>
+
+                <!-- Section Badge -->
+                <span
+                    class="text-xs text-muted-foreground uppercase tracking-wider font-medium"
+                >
+                    GITHUB REPOSITORIES
+                </span>
+
+                <!-- Section Description -->
+                <p class="text-muted-foreground leading-relaxed">
+                    Explore my open-source projects and contributions on GitHub.
+                    These are my most recently updated public repositories.
+                </p>
+
+                {
+                    error && (
+                        <div class="w-full p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-lg">
+                            <p class="text-red-600 dark:text-red-400 text-sm">
+                                {error}
+                            </p>
+                        </div>
+                    )
+                }
+
+                {
+                    repositories.length > 0 && (
+                        <div class="w-full grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                            {repositories.map((repo) => (
+                                <GitHubRepoCard repo={repo} />
+                            ))}
+                        </div>
+                    )
+                }
+
+                {
+                    !error && repositories.length === 0 && (
+                        <div class="w-full p-8 text-center">
+                            <p class="text-muted-foreground">
+                                No repositories found.
+                            </p>
+                        </div>
+                    )
+                }
+
+                <!-- View All on GitHub Button -->
+                {
+                    repositories.length > 0 && (
+                        <div class="pt-4">
+                            <a
+                                href={personal.socialLinks.github || "#"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-950 text-accent-blue hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-300 dark:border-blue-400/50 rounded-md transition-colors text-sm"
+                            >
+                                View all repositories on GitHub
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="M7 7h10v10" />
+                                    <path d="M7 17 17 7" />
+                                </svg>
+                            </a>
+                        </div>
+                    )
+                }
+            </div>
+        </div>
+    </section>
+</Container>
