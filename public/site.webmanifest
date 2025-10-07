@@ -9,9 +9,9 @@
       "type": "image/svg+xml"
     },
     {
-      "src": "/avatar.png",
+      "src": "/avatar.jpg",
       "sizes": "512x512",
-      "type": "image/png",
+      "type": "image/jpg",
       "purpose": "any maskable"
     }
   ],

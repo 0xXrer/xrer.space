@@ -64,7 +64,7 @@ const portfolioConfig: PortfolioConfig = {
       "I'm a 17-year-old passionate developer from Kazakhstan. I specialize in fullstack development and software engineering, currently diving into the exciting world of reverse engineering as a junior - and I'm absolutely loving every moment of it!",
       "My journey in programming has led me through various languages and technologies. I enjoy building innovative solutions and exploring the depths of how software works.",
     ],
-    avatar: "/avatar.png",
+    avatar: "/avatar.jpg",
     socialLinks: {
       github: "https://github.com/0xXrer",
     },
@@ -76,7 +76,6 @@ const portfolioConfig: PortfolioConfig = {
     { name: "Rust", icon: "/icons/rust.svg", category: "language" },
     { name: "C#", icon: "/icons/csharp.svg", category: "language" },
     { name: "C++", icon: "/icons/cpp.svg", category: "language" },
-    { name: "PHP", icon: "/icons/php.svg", category: "language" },
     { name: "Python", icon: "/icons/python.svg", category: "language" },
     { name: "Lua", icon: "/icons/lua.svg", category: "language" },
     { name: "Luau", icon: "/icons/luau.svg", category: "language" },
