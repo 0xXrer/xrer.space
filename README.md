@@ -1,6 +1,7 @@
 <picture>
   <img src="public/banner.png" alt="Banner" width="100%">
 </picture>
+
 # Modern Portfolio Website
 
 A sleek, modern portfolio website built with Astro, React, and Tailwind CSS. Features a configuration-driven approach for easy customization and maintenance.
