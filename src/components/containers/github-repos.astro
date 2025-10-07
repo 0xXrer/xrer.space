@@ -37,19 +37,46 @@ try {
             )
             .slice(0, 12); // Show top 12 most recently updated repos
 
-        // Fetch OpenGraph images for each repository
+        // Fetch social preview images for each repository
         repositories = await Promise.all(
             filteredRepos.map(async (repo) => {
                 let ogImage = null;
                 try {
-                    // Try to fetch the repository's OpenGraph image
-                    const ogUrl = `https://opengraph.githubassets.com/1/${githubUsername}/${repo.name}`;
-                    ogImage = ogUrl;
+                    // Fetch the actual HTML page to extract the og:image meta tag
+                    const pageResponse = await fetch(
+                        `https://github.com/${githubUsername}/${repo.name}`,
+                        {
+                            headers: {
+                                "User-Agent":
+                                    "Mozilla/5.0 (compatible; Bot/1.0)",
+                            },
+                        },
+                    );
+
+                    if (pageResponse.ok) {
+                        const html = await pageResponse.text();
+
+                        // Extract og:image from meta tags
+                        const ogImageMatch = html.match(
+                            /<meta property="og:image" content="([^"]+)"/,
+                        );
+
+                        if (ogImageMatch && ogImageMatch[1]) {
+                            ogImage = ogImageMatch[1];
+                        }
+                    }
+
+                    // Fallback to auto-generated OG image if extraction fails
+                    if (!ogImage) {
+                        ogImage = `https://opengraph.githubassets.com/1/${githubUsername}/${repo.name}`;
+                    }
                 } catch (e) {
                     console.error(
-                        `Failed to get OG image for ${repo.name}:`,
+                        `Failed to get preview image for ${repo.name}:`,
                         e,
                     );
+                    // Fallback to auto-generated OG image
+                    ogImage = `https://opengraph.githubassets.com/1/${githubUsername}/${repo.name}`;
                 }
 
                 return {
