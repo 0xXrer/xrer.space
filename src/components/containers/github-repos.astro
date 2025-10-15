@@ -2,6 +2,7 @@
 import Container from "@/components/container.astro";
 import Grid from "@/components/patters/grid.astro";
 import GitHubRepoCard from "@/components/GitHubRepoCard.astro";
+import GitHubIcon from "@/components/icons/GitHubIcon.astro";
 import portfolioConfig from "@/config/portfolio";
 
 const { personal } = portfolioConfig;
@@ -106,11 +107,11 @@ try {
                         href={personal.socialLinks.github || "#"}
                         target="_blank"
                     >
-                        <img
-                            src="/github.png"
-                            alt="GitHub Profile"
-                            class="pointer-events-none select-none w-18 h-18 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
-                        />
+                        <div
+                            class="pointer-events-none select-none w-18 h-18 rounded-lg flex items-center justify-center outline outline-dashed outline-2 outline-offset-[-1px] outline-border text-foreground"
+                        >
+                            <GitHubIcon width="72" height="72" />
+                        </div>
                     </a>
                 </div>
 
@@ -129,10 +130,8 @@ try {
 
                 {
                     error && (
-                        <div class="w-full p-4 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-lg">
-                            <p class="text-red-600 dark:text-red-400 text-sm">
-                                {error}
-                            </p>
+                        <div class="w-full p-4 bg-destructive/10 border border-destructive/30 rounded-lg">
+                            <p class="text-destructive text-sm">{error}</p>
                         </div>
                     )
                 }
@@ -165,7 +164,7 @@ try {
                                 href={personal.socialLinks.github || "#"}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-950 text-accent-blue hover:bg-blue-100 dark:hover:bg-blue-900 border border-blue-300 dark:border-blue-400/50 rounded-md transition-colors text-sm"
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary hover:bg-primary/20 border border-primary/30 rounded-md transition-colors text-sm"
                             >
                                 View all repositories on GitHub
                                 <svg

@@ -1,4 +1,6 @@
 ---
+import GitHubIcon from "@/components/icons/GitHubIcon.astro";
+
 interface Props {
     repo: {
         id: number;
@@ -51,7 +53,7 @@ const languageColor = repo.language
 ---
 
 <div
-    class="group relative flex flex-col h-full overflow-hidden bg-background border border-border rounded-lg hover:border-blue-300 transition-all duration-300"
+    class="group relative flex flex-col h-full overflow-hidden bg-background border border-border rounded-lg hover:border-primary transition-all duration-300"
 >
     <!-- Repository Banner Image -->
     {
@@ -76,13 +78,11 @@ const languageColor = repo.language
                 rel="noopener noreferrer"
                 class="flex items-center gap-2 group/link"
             >
-                <img
-                    class="flex-shrink-0 w-5 h-5 text-muted-foreground"
-                    src="/github.png"
-                    alt="GitHub Logo"
-                />
+                <div class="flex-shrink-0 w-5 h-5 text-muted-foreground">
+                    <GitHubIcon width="20" height="20" />
+                </div>
                 <h3
-                    class="font-medium text-foreground group-hover/link:text-accent-blue transition-colors line-clamp-1"
+                    class="font-medium text-foreground group-hover/link:text-primary transition-colors line-clamp-1"
                 >
                     {repo.name}
                 </h3>
@@ -122,7 +122,7 @@ const languageColor = repo.language
             repo.topics && repo.topics.length > 0 && (
                 <div class="flex flex-wrap gap-1 mb-3">
                     {repo.topics.slice(0, 3).map((topic) => (
-                        <span class="text-xs px-2 py-0.5 bg-blue-50 dark:bg-blue-950/50 text-accent-blue rounded-full border border-blue-200 dark:border-blue-800">
+                        <span class="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full border border-primary/30">
                             {topic}
                         </span>
                     ))}
@@ -190,7 +190,7 @@ const languageColor = repo.language
                     href={repo.html_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="px-3 py-1.5 bg-background hover:bg-blue-50 dark:hover:bg-blue-950 border border-blue-300 text-accent-blue text-xs rounded transition-colors"
+                    class="px-3 py-1.5 bg-background hover:bg-primary/10 border border-primary text-primary text-xs rounded transition-colors"
                 >
                     View Code
                 </a>
@@ -200,7 +200,7 @@ const languageColor = repo.language
                             href={repo.homepage}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="px-3 py-1.5 bg-background hover:bg-blue-50 dark:hover:bg-blue-950 border border-blue-300 text-accent-blue text-xs rounded transition-colors"
+                            class="px-3 py-1.5 bg-background hover:bg-primary/10 border border-primary text-primary text-xs rounded transition-colors"
                         >
                             Live Demo
                         </a>

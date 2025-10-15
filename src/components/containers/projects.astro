@@ -2,6 +2,7 @@
 import Container from "@/components/container.astro";
 import Grid from "@/components/patters/grid.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import GitHubIcon from "@/components/icons/GitHubIcon.astro";
 import portfolioConfig from "@/config/portfolio";
 
 const { personal, projects } = portfolioConfig;
@@ -11,7 +12,7 @@ const featuredProjects = projects.filter((project) => project.featured);
 const regularProjects = projects.filter((project) => !project.featured);
 ---
 
-<Container showTopLine={false}>
+<Container showTopLine={false} showBottomLine={false}>
     <Grid
         patternSize={24}
         enableGradient={true}
@@ -30,11 +31,11 @@ const regularProjects = projects.filter((project) => !project.featured);
                         href={personal.socialLinks.github || "#"}
                         target="_blank"
                     >
-                        <img
-                            src="/github.png"
-                            alt={`${personal.name} Profile Picture`}
-                            class="pointer-events-none select-none w-18 h-18 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
-                        />
+                        <div
+                            class="pointer-events-none select-none w-18 h-18 rounded-lg flex items-center justify-center outline outline-dashed outline-2 outline-offset-[-1px] outline-border text-foreground"
+                        >
+                            <GitHubIcon width="72" height="72" />
+                        </div>
                     </a>
                 </div>
 

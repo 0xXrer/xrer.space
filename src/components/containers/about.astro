@@ -1,41 +1,40 @@
 ---
 import Container from "@/components/container.astro";
 import Skills from "@/components/Skills.astro";
-import portfolioConfig from "@/config/portfolio";
+import portfolioConfig, { getAvatarUrl } from "@/config/portfolio";
 
 const { personal, skills } = portfolioConfig;
 
-// Extract GitHub username from GitHub URL and construct avatar URL
-const getGitHubAvatar = (githubUrl: string | undefined): string => {
-    if (!githubUrl) return personal.avatar;
+// Use the helper function from portfolio config to get avatar URL
+const avatarUrl = getAvatarUrl(portfolioConfig);
 
-    const match = githubUrl.match(/github\.com\/([^\/]+)/);
-    if (match && match[1]) {
-        return `https://github.com/${match[1]}.png`;
-    }
-
-    return personal.avatar;
-};
-
-const avatarUrl = personal.socialLinks.github
-    ? getGitHubAvatar(personal.socialLinks.github)
-    : personal.avatar;
+// Get banner configuration
+const bannerStyle = personal.banner
+    ? `background-image: url('${personal.banner}');`
+    : `background-color: ${personal.bannerColor || "#5865F2"};`;
 ---
 
 <Container
     showTopBoxes={false}
     showTopLine={false}
-    class="h-auto flex flex-col gap-6"
+    class="h-auto flex flex-col pt-4"
 >
+    <!-- Discord-style Profile Banner -->
+    <div
+        class="w-full h-48 sm:h-62 bg-cover bg-center rounded-lg"
+        style={bannerStyle}
+    >
+    </div>
+
     <section class="flex flex-col sm:flex-row items-start gap-6 p-6">
-        <!-- Avatar Image -->
+        <!-- Avatar Image with elevated style -->
         <div
-            class="flex-shrink-0 p-0.5 bg-background border border-2 rounded-lg"
+            class="flex-shrink-0 p-0.5 bg-background border border-2 rounded-lg relative z-10"
         >
             <img
                 src={avatarUrl}
                 alt={`${personal.name} Profile Picture`}
-                class="pointer-events-none select-none w-18 h-18 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
+                class="pointer-events-none select-none w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
             />
         </div>
 

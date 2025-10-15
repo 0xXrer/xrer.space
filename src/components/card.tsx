@@ -84,9 +84,9 @@ export const BottomPanel: React.FC<BottomPanelProps> = ({
   };
 
   return (
-    <div className="absolute bg-background right-0 bottom-0 left-0 z-4 flex items-center bg-cream-50 border-t border-blue-300 divide-x divide-blue-300 dark:divide-blue-400/50 text-accent-blue text-xs [box-shadow:hsl(218,_13%,_50%,_0.1)_0_-2px_0_0_inset] transform transition-transform duration-200 group-hover:translate-y-0 md:translate-y-full">
+    <div className="absolute bg-background right-0 bottom-0 left-0 z-4 flex items-center border-t border-primary divide-x divide-primary text-primary text-xs shadow-sm transform transition-transform duration-200 group-hover:translate-y-0 md:translate-y-full">
       <a
-        className="dark:bg-offgray-950 w-full px-3 py-2 text-center hover:bg-blue-50 dark:hover:bg-blue-950"
+        className="w-full px-3 py-2 text-center hover:bg-primary/10 transition-colors"
         href={link}
       >
         Learn More →
@@ -97,9 +97,9 @@ export const BottomPanel: React.FC<BottomPanelProps> = ({
             <button
               type="button"
               disabled={!videoSrc}
-              className={`dark:bg-offgray-950 flex w-full cursor-pointer items-center justify-center gap-1.5 px-3 py-2 transition-colors ${
+              className={`flex w-full cursor-pointer items-center justify-center gap-1.5 px-3 py-2 transition-colors ${
                 videoSrc
-                  ? "hover:bg-blue-50 dark:hover:bg-blue-950"
+                  ? "hover:bg-primary/10"
                   : "opacity-50 cursor-not-allowed"
               }`}
             >
@@ -167,9 +167,9 @@ export const CardImage: React.FC<CardImageProps> = ({
 }) => {
   return (
     <div
-      className={`group relative p-2 overflow-hidden rounded-md border transition-all duration-300 ease-in-out hover:border-blue-300 ${className}`}
+      className={`group relative p-2 overflow-hidden rounded-md border border-border transition-all duration-300 ease-in-out hover:border-primary ${className}`}
     >
-      <DiagonalLines className="absolute inset-0 w-full h-full pointer-events-none stroke-border transition-all duration-300 ease-in-out group-hover:stroke-blue-300" />
+      <DiagonalLines className="absolute inset-0 w-full h-full pointer-events-none stroke-border transition-all duration-300 ease-in-out group-hover:stroke-primary" />
       <img
         src={src}
         alt={alt}

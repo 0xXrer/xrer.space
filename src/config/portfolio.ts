@@ -26,7 +26,9 @@ export interface PersonalInfo {
   location: string;
   title: string;
   bio: string[];
-  avatar: string;
+  avatar?: string;
+  banner?: string; // Discord-style profile banner
+  bannerColor?: string; // Fallback color if no banner image (e.g., "#5865F2")
   socialLinks: {
     github?: string;
     linkedin?: string;
@@ -54,6 +56,30 @@ export interface PortfolioConfig {
   seo: SEOConfig;
 }
 
+/**
+ * Helper function to get the avatar URL
+ * If avatar is provided, use it. Otherwise, fallback to GitHub avatar if available.
+ */
+export function getAvatarUrl(config: PortfolioConfig): string {
+  const { avatar, socialLinks } = config.personal;
+
+  // If avatar is explicitly set and not empty, use it
+  if (avatar && avatar.trim() !== "") {
+    return avatar;
+  }
+
+  // Fallback to GitHub avatar if GitHub URL is available
+  if (socialLinks.github) {
+    const match = socialLinks.github.match(/github\.com\/([^\/]+)/);
+    if (match && match[1]) {
+      return `https://github.com/${match[1]}.png`;
+    }
+  }
+
+  // Ultimate fallback (empty string or you could use a default placeholder)
+  return "";
+}
+
 const portfolioConfig: PortfolioConfig = {
   personal: {
     name: "Xrer",
@@ -64,7 +90,9 @@ const portfolioConfig: PortfolioConfig = {
       "I'm a 17-year-old passionate developer from Kazakhstan. I specialize in fullstack development and software engineering, currently diving into the exciting world of reverse engineering as a junior - and I'm absolutely loving every moment of it!",
       "My journey in programming has led me through various languages and technologies. I enjoy building innovative solutions and exploring the depths of how software works.",
     ],
-    avatar: "/avatar.jpg",
+    avatar: "/avatar.gif",
+    banner: "profilebanner.png", // Add your banner image here (or leave empty)
+    bannerColor: "#5865F2", // Fallback color (Discord blue by default)
     socialLinks: {
       github: "https://github.com/0xXrer",
     },
@@ -139,7 +167,7 @@ const portfolioConfig: PortfolioConfig = {
     ],
     author: "Xrer",
     siteUrl: "https://xrer.space", // Update this to your actual domain
-    image: "/avatar.png", // This will be the default social media image
+    image: "", // This will be the default social media image
     twitterHandle: "@xrer", // Update if you have Twitter
     locale: "en_US",
     type: "website",
