@@ -8,6 +8,7 @@ import { ThemeWrapper } from "@/components/theme-wrapper";
 import About from "@/components/containers/about.astro";
 import Projects from "@/components/containers/projects.astro";
 import GitHubRepos from "@/components/containers/github-repos.astro";
+import Contact from "@/components/containers/contact.astro";
 import Soon from "@/components/containers/soon.astro";
 
 const { personal, seo } = portfolioConfig;
@@ -57,12 +58,15 @@ const { personal, seo } = portfolioConfig;
         <ThemeWrapper client:load>
             <main
                 class="mx-3 grow md:mx-8 lg:mx-12 grid-border-color border-r border-l"
+                id="main-content"
             >
                 <About />
 
                 <Projects />
 
                 <GitHubRepos />
+
+                <Contact />
 
                 <Soon />
             </main>

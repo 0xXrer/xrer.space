@@ -4,6 +4,7 @@ import Grid from "@/components/patters/grid.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import GitHubIcon from "@/components/icons/GitHubIcon.astro";
 import portfolioConfig from "@/config/portfolio";
+import { TranslatedText } from "@/components/translated-text";
 
 const { personal, projects } = portfolioConfig;
 
@@ -40,17 +41,20 @@ const regularProjects = projects.filter((project) => !project.featured);
                 </div>
 
                 <!-- Project Badge -->
-                <span
-                    class="text-xs text-muted-foreground uppercase tracking-wider font-medium"
-                >
-                    MY WORKS
-                </span>
+                <TranslatedText
+                    path="projects.badge"
+                    as="span"
+                    className="text-xs text-muted-foreground uppercase tracking-wider font-medium"
+                    client:load
+                />
 
                 <!-- Project Description -->
-                <p class="text-muted-foreground leading-relaxed">
-                    All projects are protected by a license agreement, you can
-                    learn more about the project by clicking on it.
-                </p>
+                <TranslatedText
+                    path="projects.description"
+                    as="p"
+                    className="text-muted-foreground leading-relaxed"
+                    client:load
+                />
 
                 <div class="w-full grid-cols-1 gap-8 md:grid md:grid-cols-6">
                     <!-- Featured Projects -->

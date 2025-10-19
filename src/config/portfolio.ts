@@ -37,6 +37,11 @@ export interface PersonalInfo {
   };
 }
 
+export interface ContactInfo {
+  discord?: string;
+  discordId?: string;
+}
+
 export interface SEOConfig {
   title: string;
   description: string;
@@ -53,6 +58,7 @@ export interface PortfolioConfig {
   personal: PersonalInfo;
   skills: SkillConfig[];
   projects: ProjectConfig[];
+  contact: ContactInfo;
   seo: SEOConfig;
 }
 
@@ -138,6 +144,11 @@ const portfolioConfig: PortfolioConfig = {
       status: "completed",
     },
   ],
+
+  contact: {
+    discord: "xrer", // Your Discord username
+    discordId: "1287660832133611520", // Optional: Your Discord User ID for direct profile link
+  },
 
   seo: {
     title: "Xrer - Full Stack Developer & Reverse Engineer Portfolio",
