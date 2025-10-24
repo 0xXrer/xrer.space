@@ -1,6 +1,7 @@
 ---
 import "@/styles/global.css";
 import portfolioConfig from "@/config/portfolio";
+<<<<<<< HEAD
 import SEO from "@/components/common/SEO.astro";
 import { ThemeWrapper } from "@/components/layout/theme/theme-wrapper";
 
@@ -9,6 +10,17 @@ import About from "@/features/about/main.astro";
 import Projects from "@/features/projects/main.astro";
 import GitHubRepos from "@/features/github/main.astro";
 import Contacts from "@/features/contacts/main.astro";
+=======
+import SEO from "@/components/SEO.astro";
+import { ThemeWrapper } from "@/components/theme-wrapper";
+
+// Containers
+import About from "@/components/containers/about.astro";
+import Projects from "@/components/containers/projects.astro";
+import GitHubRepos from "@/components/containers/github-repos.astro";
+import Contact from "@/components/containers/contact.astro";
+import Soon from "@/components/containers/soon.astro";
+>>>>>>> 8ae127a311439fbe1dc06c145c432ba836e81e15
 
 const { personal, seo } = portfolioConfig;
 ---
@@ -65,7 +77,13 @@ const { personal, seo } = portfolioConfig;
 
                 <GitHubRepos />
 
+<<<<<<< HEAD
                 <Contacts />
+=======
+                <Contact />
+
+                <Soon />
+>>>>>>> 8ae127a311439fbe1dc06c145c432ba836e81e15
             </main>
         </ThemeWrapper>
     </body>

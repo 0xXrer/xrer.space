@@ -1,0 +1,87 @@
+---
+import Container from "@/components/container.astro";
+import Grid from "@/components/patters/grid.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import GitHubIcon from "@/components/icons/GitHubIcon.astro";
+import portfolioConfig from "@/config/portfolio";
+import { TranslatedText } from "@/components/translated-text";
+
+const { personal, projects } = portfolioConfig;
+
+// Separate featured and regular projects
+const featuredProjects = projects.filter((project) => project.featured);
+const regularProjects = projects.filter((project) => !project.featured);
+---
+
+<Container showTopLine={false} showBottomLine={false}>
+    <Grid
+        patternSize={24}
+        enableGradient={true}
+        gradientSize={90}
+        gradientDirection={"to-bottom"}
+        class="absolute inset-0 w-full h-full opacity-20 pointer-events-none"
+    />
+    <section class="p-6">
+        <div class="bg-background w-full p-6">
+            <div class="flex flex-col items-center text-center space-y-4">
+                <!-- Project Icon -->
+                <div
+                    class="flex-shrink-0 p-0.5 bg-background border border-2 rounded-lg"
+                >
+                    <a
+                        href={personal.socialLinks.github || "#"}
+                        target="_blank"
+                    >
+                        <div
+                            class="pointer-events-none select-none w-18 h-18 rounded-lg flex items-center justify-center outline outline-dashed outline-2 outline-offset-[-1px] outline-border text-foreground"
+                        >
+                            <GitHubIcon width="72" height="72" />
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Project Badge -->
+                <TranslatedText
+                    path="projects.badge"
+                    as="span"
+                    className="text-xs text-muted-foreground uppercase tracking-wider font-medium"
+                    client:load
+                />
+
+                <!-- Project Description -->
+                <TranslatedText
+                    path="projects.description"
+                    as="p"
+                    className="text-muted-foreground leading-relaxed"
+                    client:load
+                />
+
+                <div class="w-full grid-cols-1 gap-8 md:grid md:grid-cols-6">
+                    <!-- Featured Projects -->
+                    {
+                        featuredProjects.map((project) => (
+                            <section class=" col-span-full w-full transition-opacity duration-100 ease-out default-border-color border-b border-dashed pb-6 will-change-opacity">
+                                <ProjectCard
+                                    project={project}
+                                    featured={true}
+                                    gridClass="w-full"
+                                />
+                            </section>
+                        ))
+                    }
+
+                    <!-- Regular Projects -->
+                    {
+                        regularProjects.map((project) => (
+                            <ProjectCard
+                                project={project}
+                                featured={false}
+                                gridClass="col-span-full h-full md:col-span-3"
+                            />
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</Container>

@@ -1,0 +1,65 @@
+---
+// Simple component to test if videos are loading properly
+---
+
+<div class="video-test-container p-4 border rounded-lg">
+    <h3 class="text-lg font-bold mb-2">Video Test</h3>
+    <p class="text-sm text-muted-foreground mb-4">Hover over the video to test functionality:</p>
+
+    <div class="video-container relative border rounded" data-project-id="test">
+        <video
+            class="video-element w-full h-auto object-cover rounded-sm"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            style="max-width: 300px;"
+        >
+            <source src="/videos/projects-preview/uilibs.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.querySelector('[data-project-id="test"]');
+        const video = container?.querySelector('.video-element');
+
+        if (!video || !container) {
+            console.error('Video test: Elements not found');
+            return;
+        }
+
+        console.log('Video test: Setting up video hover functionality');
+
+        container.addEventListener("mouseenter", () => {
+            console.log('Video test: Mouse enter - attempting to play video');
+            video.currentTime = 0;
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise
+                    .then(() => {
+                        console.log('Video test: Video playing successfully');
+                    })
+                    .catch((error) => {
+                        console.log('Video test: Auto-play prevented:', error);
+                    });
+            }
+        });
+
+        container.addEventListener("mouseleave", () => {
+            console.log('Video test: Mouse leave - pausing video');
+            video.pause();
+            video.currentTime = 0;
+        });
+
+        video.addEventListener("loadeddata", () => {
+            console.log('Video test: Video loaded successfully');
+        });
+
+        video.addEventListener("error", (e) => {
+            console.error('Video test: Video error:', e);
+        });
+    });
+</script>

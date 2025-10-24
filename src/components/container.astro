@@ -1,0 +1,82 @@
+---
+import DiagonalLines from "./patters/diagonal-lines.astro";
+
+export interface Props {
+    showTopBoxes?: boolean;
+    showBottomBoxes?: boolean;
+    showAllBoxes?: boolean;
+    showSvgPattern?: boolean;
+    showTopLine?: boolean;
+    showBottomLine?: boolean;
+    class?: string;
+}
+
+const {
+    showTopBoxes = true,
+    showBottomBoxes = true,
+    showAllBoxes = false,
+    showSvgPattern = false,
+    showTopLine = true,
+    showBottomLine = true,
+    class: className = "",
+} = Astro.props;
+
+// Determine which boxes to show
+const shouldShowTopBoxes = showAllBoxes || showTopBoxes;
+const shouldShowBottomBoxes = showAllBoxes || showBottomBoxes;
+const shouldShowSvg = showSvgPattern;
+---
+
+<!-- Top line -->{
+    showTopLine && (
+        <section class="-mx-3 flex items-center justify-center md:-mx-12">
+            <hr
+                class="grid-
+                border-color
+w-full border-t"
+            />
+        </section>
+    )
+}
+
+<!-- Main container -->
+<section class={`relative h-auto w-full px-4 sm:px-6 ${className}`}>
+    <!-- Top corner boxes -->
+    {
+        shouldShowTopBoxes && (
+            <>
+                <div class="absolute z-10 size-2 rotate-45 rounded-[1px] bg-background border top-[-4.5px] left-[-4.5px]" />
+                <div class="absolute z-10 size-2 rotate-45 rounded-[1px] bg-background border top-[-4.5px] right-[-4.5px]" />
+            </>
+        )
+    }
+
+    <!-- Bottom corner boxes -->
+    {
+        shouldShowBottomBoxes && (
+            <>
+                <div class="absolute z-10 size-2 rotate-45 rounded-[1px] bg-background border bottom-[-4.5px] left-[-4.5px]" />
+                <div class="absolute z-10 size-2 rotate-45 rounded-[1px] bg-background border right-[-4.5px] bottom-[-4.5px]" />
+            </>
+        )
+    }
+
+    <!-- Optional SVG pattern -->
+    {
+        shouldShowSvg && (
+            <DiagonalLines class="absolute inset-0 w-full h-full opacity-10 pointer-events-none" />
+        )
+    }
+
+    <!-- Content slot -->
+    <slot />
+</section>
+
+<!-- Bottom line -->
+{
+    showBottomLine && (
+        <section class="-mx-3 flex items-center justify-center md:-mx-12">
+            <hr class="grid-border-color w-full border-t" />
+        </section>
+    )
+}
