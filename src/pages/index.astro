@@ -1,0 +1,72 @@
+---
+import "@/styles/global.css";
+import portfolioConfig from "@/config/portfolio";
+import SEO from "@/components/common/SEO.astro";
+import { ThemeWrapper } from "@/components/layout/theme/theme-wrapper";
+
+// Containers
+import About from "@/features/about/main.astro";
+import Projects from "@/features/projects/main.astro";
+import GitHubRepos from "@/features/github/main.astro";
+import Contacts from "@/features/contacts/main.astro";
+
+const { personal, seo } = portfolioConfig;
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{personal.name} Portfolio</title>
+
+        <!-- SEO and Social Media Meta Tags -->
+        <SEO seo={seo} />
+
+        <!-- Theme initialization script to prevent flash -->
+        <script is:inline>
+            const theme = (() => {
+                if (
+                    typeof localStorage !== "undefined" &&
+                    localStorage.getItem("vite-ui-theme")
+                ) {
+                    return localStorage.getItem("vite-ui-theme");
+                }
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    return "dark";
+                }
+                return "light";
+            })();
+
+            if (theme === "light") {
+                document.documentElement.classList.remove("dark");
+            } else if (theme === "dark") {
+                document.documentElement.classList.add("dark");
+            } else {
+                // System theme
+                if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <ThemeWrapper client:load>
+            <main
+                class="mx-3 grow md:mx-8 lg:mx-12 grid-border-color border-r border-l"
+                id="main-content"
+            >
+                <About />
+
+                <Projects />
+
+                <GitHubRepos />
+
+                <Contacts />
+            </main>
+        </ThemeWrapper>
+    </body>
+</html>

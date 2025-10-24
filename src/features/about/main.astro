@@ -1,0 +1,58 @@
+---
+import Container from "@/components/layout/container.astro";
+import Skills from "./components/skillsContainer.astro";
+import portfolioConfig, { getAvatarUrl } from "@/config/portfolio";
+
+const { personal, skills } = portfolioConfig;
+
+// Use the helper function from portfolio config to get avatar URL
+const avatarUrl = getAvatarUrl(portfolioConfig);
+
+// Get banner configuration
+const bannerStyle = personal.banner
+    ? `background-image: url('${personal.banner}');`
+    : `background-color: ${personal.bannerColor || "#5865F2"};`;
+---
+
+<Container
+    showTopBoxes={false}
+    showTopLine={false}
+    class="h-auto flex flex-col pt-4"
+>
+    <!-- Discord-style Profile Banner -->
+    <div
+        class="w-full h-48 sm:h-62 bg-cover bg-center rounded-lg"
+        style={bannerStyle}
+    >
+    </div>
+
+    <section class="flex flex-col sm:flex-row items-start gap-6 p-6">
+        <!-- Avatar Image with elevated style -->
+        <div
+            class="flex-shrink-0 p-0.5 bg-background border border-2 rounded-lg relative z-10"
+        >
+            <img
+                src={avatarUrl}
+                alt={`${personal.name} Profile Picture`}
+                class="pointer-events-none select-none w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover outline outline-dashed outline-2 outline-offset-[-1px] outline-border"
+            />
+        </div>
+
+        <!-- Profile Info -->
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-bold mb-1">{personal.name}</h1>
+
+            <div class="space-y-2">
+                {
+                    personal.bio.map((paragraph) => (
+                        <p class="text-foreground leading-relaxed">
+                            {paragraph}
+                        </p>
+                    ))
+                }
+
+                <Skills skills={skills} />
+            </div>
+        </div>
+    </section>
+</Container>
